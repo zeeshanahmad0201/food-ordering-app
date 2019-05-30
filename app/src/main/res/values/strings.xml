@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Food Ordering App</string>
+    <string name="slogan">Awesome food that you can eat everyday. When you think of food, think of us. We will find you and feed you.</string>
+    <string name="buttonLoginValue">Login</string>
+    <string name="buttonSignupValue">Signup</string>
+    <string name="application_logo_description">Application Logo</string>
+</resources>
