@@ -1,6 +1,8 @@
 package com.example.foodorderingapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +35,10 @@ public class SignUpActivity extends AppCompatActivity {
     // Member Variables
     private DatabaseReference mReference;
     private FirebaseAuth mAuth;
+
+    // Constants
+    public static final String APP_PREFS = "userDetails";
+    public static final String DISPLAY_NAME_KEY = "username";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +98,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.child(phoneNumber).exists()) {
-
+                    saveDisplayName(name);
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -114,7 +120,7 @@ public class SignUpActivity extends AppCompatActivity {
                             }
                         }
                     });
-                } else {
+                } else if(dataSnapshot.child(phoneNumber).exists()) {
                     phoneNumberInput.setError("Phone Number Already Registered!");
                     phoneNumberInput.requestFocus();
                     mProgressBar.setVisibility(View.GONE);
@@ -129,6 +135,11 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
+    // Save the display name to Shared Preferences
+    private void saveDisplayName(String name) {
+        SharedPreferences prefs = getSharedPreferences(APP_PREFS, 0);
+        prefs.edit().putString(DISPLAY_NAME_KEY, name).apply();
+    }
 
     // Password validation
     private String checkPassword(String password) {

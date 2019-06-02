@@ -1,5 +1,6 @@
 package com.example.foodorderingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -52,13 +53,16 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login(String email, String password) {
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
+                    // Go to home activity
+                    Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(homeIntent);
+
                 } else {
                     Toast.makeText(LoginActivity.this, "Invalid Email/Password", Toast.LENGTH_SHORT).show();
                 }

@@ -1,7 +1,20 @@
 <resources>
-    <string name="app_name">Food Ordering App</string>
+    <string name="app_name" translatable="false">Food Ordering App</string>
     <string name="slogan">Awesome food that you can eat everyday. When you think of food, think of us. We will find you and feed you.</string>
-    <string name="buttonLoginValue">Login</string>
-    <string name="buttonSignupValue">Signup</string>
-    <string name="application_logo_description">Application Logo</string>
+    <string name="buttonLoginValue" translatable="false">Login</string>
+    <string name="buttonSignupValue" translatable="false">Signup</string>
+    <string name="application_logo_description" translatable="false">Application Logo</string>
+    <string name="title_activity_home">Home</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings" translatable="false">Settings</string>
+
+    <string name="menu_home" translatable="false">Menu</string>
+    <string name="menu_cart">Cart</string>
+    <string name="menu_order">Orders</string>
+    <string name="menu_sign_out">Sign out</string>
+    <string name="logout">Logout</string>
 </resources>
