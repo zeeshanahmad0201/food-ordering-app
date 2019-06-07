@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -22,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -95,9 +93,19 @@ public class HomeActivity extends AppCompatActivity
             protected void populateViewHolder(CategoryItemsHolder viewHolder, CategoryItems model, int position) {
                 viewHolder.setName(model.getName());
                 viewHolder.setImage(getApplicationContext(), model.getUrl());
+
+                final String categoryID = getRef(position).getKey();
+
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent itemIntent = new Intent(HomeActivity.this, ItemsActivity.class);
+                        itemIntent.putExtra("categoryID", categoryID);
+                        startActivity(itemIntent);
+                    }
+                });
             }
         };
-
         menuItems.setAdapter(FBRA);
     }
 
@@ -106,17 +114,18 @@ public class HomeActivity extends AppCompatActivity
 
 
         View mView;
+
         public CategoryItemsHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
         }
 
-        public void setName(String name){
+        public void setName(String name) {
             TextView categoryName = mView.findViewById(R.id.categoryName);
             categoryName.setText(name);
         }
 
-        public void setImage(Context context, String image){
+        public void setImage(Context context, String image) {
             ImageView categoryImage = mView.findViewById(R.id.categoryImage);
             Picasso.with(context).load(image).into(categoryImage);
         }

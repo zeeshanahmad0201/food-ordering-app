@@ -23,7 +23,6 @@
         android:background="@color/backgroundOverlay"
         app:itemTextColor="@color/white"
         app:itemIconTint="@color/white"
-
         app:headerLayout="@layout/nav_header_home"
         app:menu="@menu/activity_home_drawer" />
 
