@@ -1,16 +1,22 @@
 package com.example.foodorderingapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.example.foodorderingapp.Model.ItemsRow;
+import com.example.foodorderingapp.Model.Order;
+import com.example.foodorderingapp.SQLiteDatabase.CartHandler;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +31,7 @@ public class ItemDetails extends AppCompatActivity {
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private FloatingActionButton btnCart;
     private ElegantNumberButton mNumberButton;
+    private ItemsRow itemDetails;
 
     private DatabaseReference mReference;
 
@@ -55,13 +62,29 @@ public class ItemDetails extends AppCompatActivity {
                 getItemDetails(itemID);
             }
         }
+
+
+        btnCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new CartHandler(getBaseContext(), null, null, 1).addItemsToCart(new Order(
+                        itemID,
+                        itemDetails.getName(),
+                        mNumberButton.getNumber(),
+                        itemDetails.getDiscount(),
+                        itemDetails.getPrice()
+                ));
+
+                Toast.makeText(ItemDetails.this, "Item Added to Cart Successfully", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void getItemDetails(String itemID) {
         mReference.child(itemID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ItemsRow itemDetails = dataSnapshot.getValue(ItemsRow.class);
+                itemDetails = dataSnapshot.getValue(ItemsRow.class);
 
                 // Load Item Image
                 if (itemDetails != null) {
@@ -70,7 +93,6 @@ public class ItemDetails extends AppCompatActivity {
                     item_name.setText(itemDetails.getName());
                     item_price.setText(itemDetails.getPrice());
                     item_description.setText(itemDetails.getDescription());
-
                 }
 
             }

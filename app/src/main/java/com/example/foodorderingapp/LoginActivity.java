@@ -1,6 +1,7 @@
 package com.example.foodorderingapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,10 +12,13 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.foodorderingapp.Model.UserDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -23,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText userPassword;
     private Button loginButton;
     private ProgressBar mProgressBar;
+
+    private String mDisplayPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +47,13 @@ public class LoginActivity extends AppCompatActivity {
                 loginButton.setVisibility(View.GONE);
                 mProgressBar.setVisibility(View.VISIBLE);
 
-                String email = userEmail.getText().toString().trim();
-                String password = userPassword.getText().toString().trim();
+                UserDetails user = new UserDetails();
+
+                user.setEmail(userEmail.getText().toString().trim());
+                user.setPassword(userPassword.getText().toString().trim());
+
+                String email = user.getEmail();
+                String password = user.getPassword();
 
                 if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
                     login(email, password);
@@ -54,12 +65,15 @@ public class LoginActivity extends AppCompatActivity {
     private void login(String email, String password) {
 
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        final DatabaseReference mReference = FirebaseDatabase.getInstance().getReference().child("user");
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     // Go to home activity
+                    UserDetails user = new UserDetails();
+                    user.setPhone(mDisplayPhone);
                     Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
                     startActivity(homeIntent);
 
@@ -70,5 +84,11 @@ public class LoginActivity extends AppCompatActivity {
                 loginButton.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    // Retrieve the display name from the Shared Preferences
+    private void setupDisplayName() {
+        SharedPreferences prefs = getSharedPreferences(SignUpActivity.APP_PREFS, MODE_PRIVATE);
+        mDisplayPhone = prefs.getString(SignUpActivity.DISPLAY_PHONE_KEY, "");
     }
 }

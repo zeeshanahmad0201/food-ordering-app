@@ -39,6 +39,7 @@ public class SignUpActivity extends AppCompatActivity {
     // Constants
     public static final String APP_PREFS = "userDetails";
     public static final String DISPLAY_NAME_KEY = "username";
+    public static final String DISPLAY_PHONE_KEY = "phone";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +99,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.child(phoneNumber).exists()) {
-                    saveDisplayName(name);
+                    saveDisplayName(name, phoneNumber);
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -136,9 +137,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     // Save the display name to Shared Preferences
-    private void saveDisplayName(String name) {
+    private void saveDisplayName(String name, String phone) {
         SharedPreferences prefs = getSharedPreferences(APP_PREFS, 0);
         prefs.edit().putString(DISPLAY_NAME_KEY, name).apply();
+        prefs.edit().putString(DISPLAY_PHONE_KEY, phone).apply();
     }
 
     // Password validation

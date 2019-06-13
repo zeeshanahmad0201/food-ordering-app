@@ -1,4 +1,4 @@
-package com.example.foodorderingapp;
+package com.example.foodorderingapp.Model;
 
 public class ItemsRow {
     private String name, image, discount, description, price, menuID;
