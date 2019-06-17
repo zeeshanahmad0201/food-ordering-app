@@ -4,7 +4,7 @@ import java.util.List;
 
 public class OrderRequest {
 
-    private String name, phone, address,  total;
+    private String name, phone, address, total, status;
     private List<Order> foods;
 
     public OrderRequest() {
@@ -16,6 +16,7 @@ public class OrderRequest {
         this.address = address;
         this.total = total;
         this.foods = foods;
+        this.status = "0";
     }
 
 
