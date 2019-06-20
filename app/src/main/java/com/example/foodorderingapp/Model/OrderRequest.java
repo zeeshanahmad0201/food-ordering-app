@@ -59,4 +59,12 @@ public class OrderRequest {
     public void setFoods(List<Order> foods) {
         this.foods = foods;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

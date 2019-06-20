@@ -176,7 +176,16 @@ public class HomeActivity extends AppCompatActivity
             //Intent homeIntent = new Intent(HomeActivity.this, HomeActivity.class);
             startActivity(getIntent());
         } else if (id == R.id.nav_cart) {
-
+            Intent cartActivity = new Intent(HomeActivity.this, CartItems.class);
+            startActivity(cartActivity);
+        }else if (id == R.id.nav_orders) {
+            Intent orderActivity = new Intent(HomeActivity.this, OrderStatus.class);
+            startActivity(orderActivity);
+        }else if (id == R.id.nav_signOut) {
+            mAuth.signOut();
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
